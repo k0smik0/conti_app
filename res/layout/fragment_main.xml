@@ -1,0 +1,267 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        tools:context="net.iubris.conti.MainActivity$PlaceholderFragment" >
+
+        <!--
+          <LinearLayout
+	        android:orientation="horizontal"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content">
+	        
+	        <LinearLayout
+	        	android:orientation="vertical"
+	        	android:layout_marginLeft="10px"
+	        	android:layout_marginRight="10px"
+	        	android:layout_width="wrap_content"
+	        	android:layout_height="match_parent">
+	        	<TextView
+				      	android:layout_width="wrap_content"
+				       android:layout_height="wrap_content"
+				       android:text="@string/what" />
+	        	<TextView
+				      	android:layout_width="wrap_content"
+				       android:layout_height="wrap_content"
+				       android:text="what" />
+	        </LinearLayout>
+	        <LinearLayout
+		        android:orientation="vertical"
+		        android:layout_marginLeft="10px"
+	        	android:layout_marginRight="10px"
+		        android:layout_width="wrap_content"
+		        android:layout_height="match_parent">
+	        	<TextView
+				      	android:layout_width="wrap_content"
+				       android:layout_height="wrap_content"
+				       android:text="@string/howmuch" />
+	        	<TextView
+				      	android:layout_width="wrap_content"
+				       android:layout_height="wrap_content"
+				       android:text="howmuch" />
+	        </LinearLayout>
+	        <LinearLayout
+		        android:orientation="vertical"
+		        android:layout_marginLeft="10px"
+	        	android:layout_marginRight="10px"
+		        android:layout_width="wrap_content"
+		        android:layout_height="match_parent">
+	        	<TextView
+				      	android:layout_width="wrap_content"
+				       android:layout_height="wrap_content"
+				       android:text="@string/when" />
+	        	<TextView
+				      	android:layout_width="wrap_content"
+				       android:layout_height="wrap_content"
+				       android:text="when" />
+	        </LinearLayout>
+	        <LinearLayout
+		        android:orientation="vertical"
+		        android:layout_marginLeft="10px"
+	        	android:layout_marginRight="10px"
+		        android:layout_width="wrap_content"
+		        android:layout_height="match_parent">
+	        	<TextView
+				      	android:layout_width="wrap_content"
+				       android:layout_height="wrap_content"
+				       android:text="@string/where" />
+	        	<TextView
+				      	android:layout_width="wrap_content"
+				       android:layout_height="wrap_content"
+				       android:text="where" />
+	        </LinearLayout>
+	        
+	    </LinearLayout>
+        -->
+
+        <TableLayout
+            android:id="@+id/table_expense"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/table_row_header"
+                    android:padding="5dip"
+                    android:text="@string/what" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/table_row_header"
+                    android:padding="5dip"
+                    android:text="@string/howmuch" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/table_row_header"
+                    android:padding="5dip"
+                    android:text="@string/when" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/table_row_header"
+                    android:padding="5dip"
+                    android:text="@string/where" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <EditText
+                    android:id="@+id/cell_expense_what_0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/cell_shape"
+                    android:padding="5dip"
+                    android:text="" />
+
+                <EditText
+                    android:id="@+id/cell_expense_howmuch_0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/cell_shape"
+                    android:padding="5dip"
+                    android:text="" />
+
+                <EditText
+                    android:id="@+id/cell_expense_when_0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/cell_shape"
+                    android:padding="5dip"
+                    android:text="" />
+
+                <EditText
+                    android:id="@+id/cell_expense_where_0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/cell_shape"
+                    android:padding="5dip"
+                    android:text="" />
+            </TableRow>
+        </TableLayout>
+
+        <Button
+            android:id="@+id/button_add_expense"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add expense row" />
+
+        <TableLayout
+            android:id="@+id/table_credit"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+            
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/table_row_header"
+                    android:padding="5dip"
+                    android:text="@string/what" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/table_row_header"
+                    android:padding="5dip"
+                    android:text="@string/howmuch" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/table_row_header"
+                    android:padding="5dip"
+                    android:text="@string/when" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <EditText
+                    android:id="@+id/cell_credit_what_0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/cell_shape"
+                    android:padding="5dip"
+                    android:text="" />
+
+                <EditText
+                    android:id="@+id/cell_credit_howmuch_0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/cell_shape"
+                    android:padding="5dip"
+                    android:text="" />
+
+                <EditText
+                    android:id="@+id/cell_credit_when_0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/cell_shape"
+                    android:padding="5dip"
+                    android:text="" />
+                
+            </TableRow>
+        </TableLayout>
+
+        <Button
+            android:id="@+id/button_add_credit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add credit row" />
+
+        <Button
+            android:id="@+id/button_submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Submit" />
+
+        <LinearLayout
+            android:id="@+id/layout_result"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/textview_result1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/textview_result2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

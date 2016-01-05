@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="color_primary_light">#deffde</color> <!-- verdino -->
+    <color name="color_primary_dark">#33ee33</color> <!-- verde scuro -->
+    
+    <color name="accent_color">#ff5722</color> <!-- arancione intenso, quasi rosso -->
+</resources>

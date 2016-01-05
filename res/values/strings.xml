@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Conti</string>
+    <string name="title_activity_main">MainActivity</string>
+    
+    <string name="what">What</string>
+    <string name="howmuch">How Much</string>
+    <string name="when">When</string>
+    <string name="where">Where</string>
+
+</resources>
