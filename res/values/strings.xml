@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">Conti</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">Conti</string>
     
     <string name="what">What</string>
     <string name="howmuch">How Much</string>
