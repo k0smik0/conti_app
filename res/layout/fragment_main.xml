@@ -82,8 +82,16 @@
 	        
 	    </LinearLayout>
         -->
-
-        <TableLayout
+								<TextView 
+								    android:layout_width="match_parent"
+								    android:layout_height="wrap_content"
+								    android:background="@drawable/name_label"
+								    android:text="Max - expenses"
+								    android:textSize="16sp"
+								    android:textStyle="bold"
+								    android:paddingLeft="31dp"
+												android:paddingRight="3dp"/>
+								<TableLayout
             android:id="@+id/table_expense"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -98,28 +106,32 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/table_row_header"
-                    android:padding="5dip"
+                    android:padding="3dip"
+                    android:textSize="12sp"
                     android:text="@string/what" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/table_row_header"
-                    android:padding="5dip"
+                    android:padding="3dip"
+                    android:textSize="12sp"
                     android:text="@string/howmuch" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/table_row_header"
-                    android:padding="5dip"
+                    android:padding="3dip"
+                    android:textSize="12sp"
                     android:text="@string/when" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/table_row_header"
-                    android:padding="5dip"
+                    android:padding="3dip"
+                    android:textSize="12sp"
                     android:text="@string/where" />
             </TableRow>
 
@@ -132,32 +144,35 @@
                     android:id="@+id/cell_expense_what_0"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/cell_shape"
-                    android:padding="5dip"
+                    android:background="@drawable/cell_border"
+                    android:padding="3dip"
                     android:text="" />
 
                 <EditText
                     android:id="@+id/cell_expense_howmuch_0"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/cell_shape"
-                    android:padding="5dip"
+                    android:background="@drawable/cell_border"
+                    android:padding="3dip"
+                    android:inputType="numberDecimal"
                     android:text="" />
 
                 <EditText
                     android:id="@+id/cell_expense_when_0"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/cell_shape"
-                    android:padding="5dip"
+                    android:background="@drawable/cell_border"
+                    android:padding="3dip"
+                    android:inputType="date"
+                    android:focusable="false"
                     android:text="" />
 
                 <EditText
                     android:id="@+id/cell_expense_where_0"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/cell_shape"
-                    android:padding="5dip"
+                    android:background="@drawable/cell_border"
+                    android:padding="3dip"
                     android:text="" />
             </TableRow>
         </TableLayout>
@@ -168,6 +183,15 @@
             android:layout_height="wrap_content"
             android:text="Add expense row" />
 
+        <TextView 
+								    android:layout_width="match_parent"
+								    android:layout_height="wrap_content"
+								    android:background="@drawable/name_label"
+								    android:text="Max - credit"
+								    android:textSize="16sp"
+								    android:textStyle="bold"
+								    android:paddingLeft="31dp"
+												android:paddingRight="31dp"/>
         <TableLayout
             android:id="@+id/table_credit"
             android:layout_width="fill_parent"
@@ -183,21 +207,24 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/table_row_header"
-                    android:padding="5dip"
+                    android:padding="3dip"
+                    android:textSize="12sp"
                     android:text="@string/what" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/table_row_header"
-                    android:padding="5dip"
+                    android:padding="3dip"
+                    android:textSize="12sp"
                     android:text="@string/howmuch" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/table_row_header"
-                    android:padding="5dip"
+                    android:padding="3dip"
+                    android:textSize="12sp"
                     android:text="@string/when" />
 
             </TableRow>
@@ -211,24 +238,27 @@
                     android:id="@+id/cell_credit_what_0"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/cell_shape"
-                    android:padding="5dip"
+                    android:background="@drawable/cell_border"
+                    android:padding="3dip"
                     android:text="" />
 
                 <EditText
                     android:id="@+id/cell_credit_howmuch_0"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/cell_shape"
-                    android:padding="5dip"
+                    android:background="@drawable/cell_border"
+                    android:padding="3dip"
+                    android:inputType="numberDecimal"
                     android:text="" />
 
                 <EditText
                     android:id="@+id/cell_credit_when_0"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/cell_shape"
-                    android:padding="5dip"
+                    android:background="@drawable/cell_border"
+                    android:padding="3dip"
+                    android:inputType="date"
+                    android:focusable="false"
                     android:text="" />
                 
             </TableRow>

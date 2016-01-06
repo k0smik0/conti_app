@@ -8,6 +8,9 @@
         android:minSdkVersion="11"
         android:targetSdkVersion="22" />
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:name=".application.ContiApplication"
         android:allowBackup="true"
@@ -17,14 +20,25 @@
         <meta-data
             android:name="roboguice.annotations.packages"
             android:value="net.iubris.conti" />
+        <meta-data
+            android:name="com.parse.APPLICATION_ID"
+            android:value="@string/parse_app_id" />
+        <meta-data
+            android:name="com.parse.CLIENT_KEY"
+            android:value="@string/parse_client_key" />
+
         <activity
             android:name="net.iubris.conti.ui.MainActivity"
-            android:label="@string/title_activity_main" >
+            android:label="@string/title_activity_main"
+            android:launchMode="singleTop">
             <intent-filter>
-								        <action android:name="android.intent.action.MAIN" />
-								        <category android:name="android.intent.category.LAUNCHER" />
-								    </intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
+        <service 
+            android:name="net.iubris.conti.service.ContiService"/>
     </application>
 
 </manifest>

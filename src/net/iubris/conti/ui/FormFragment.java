@@ -1,14 +1,27 @@
 package net.iubris.conti.ui;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import net.iubris.conti.R;
+import net.iubris.conti.model.ContentCredit;
+import net.iubris.conti.model.ContentExpense;
+import net.iubris.conti.model.ContentList;
+import net.iubris.conti.service.ContiService;
+import net.iubris.conti.ui.model.AbstractRowContent;
+import net.iubris.conti.ui.model.RowContentCredit;
+import net.iubris.conti.ui.model.RowContentExpense;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.text.InputType;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -44,6 +57,9 @@ public class FormFragment extends /*Robo*/Fragment {
 	@Bind(R.id.button_add_credit)
 	Button buttonAddCredit;
 	
+	@Bind(R.id.button_submit)
+	Button buttonSubmit;
+	
 	private Activity activity;
 	
 //	@InjectResource
@@ -64,17 +80,16 @@ public class FormFragment extends /*Robo*/Fragment {
 	Drawable cellHeaderBackground;
 	
 //	@InjectResource(R.drawable.cell_shape) private 
-	@BindDrawable(R.drawable.cell_shape)
+	@BindDrawable(R.drawable.cell_border)
 	Drawable cellContentBackground;
 
 	private final List<RowContentExpense> rowsContentExpense = new ArrayList<>();
 	private final List<RowContentCredit> rowsContentCredit = new ArrayList<>();
 	private Resources resources;
 	
-	public FormFragment() {
-		Log.d("FormFragment","constructor");
-	}
-
+//	private final Calendar myCalendar = Calendar.getInstance();
+	private static final String DATE_FORMAT_PATTERN = "yyyy/MM/dd";
+	private final SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_PATTERN, Locale.US);
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -86,17 +101,36 @@ public class FormFragment extends /*Robo*/Fragment {
 		return rootView;
 	}
 	private void addInitialRows(View rootView) {
+		final EditText expenseWhen = (EditText)rootView.findViewById(R.id.cell_expense_when_0);
+		expenseWhen.setOnClickListener(new OnClickListener() {
+	        @Override
+	        public void onClick(View v) {
+//	            new DatePickerDialog(activity, buildDatePicker(when), myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+	        	DialogFragment picker = new DatePickerFragment(expenseWhen);
+	        	picker.show(getFragmentManager(), "datePicker");
+	        }
+	    });
 		rowsContentExpense.add(
 			new RowContentExpense(
 			(EditText)rootView.findViewById(R.id.cell_expense_what_0), 
 			(EditText)rootView.findViewById(R.id.cell_expense_howmuch_0),
-			(EditText)rootView.findViewById(R.id.cell_expense_when_0),
+			expenseWhen,
 			(EditText)rootView.findViewById(R.id.cell_expense_where_0) ) );
+		
+		final EditText creditWhen = (EditText)rootView.findViewById(R.id.cell_credit_when_0);
+		creditWhen.setOnClickListener(new OnClickListener() {
+	        @Override
+	        public void onClick(View v) {
+//	            new DatePickerDialog(activity, buildDatePicker(when), myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+	        	DialogFragment picker = new DatePickerFragment(creditWhen);
+	        	picker.show(getFragmentManager(), "datePicker");
+	        }
+	    });
 		rowsContentCredit.add(
 			new RowContentCredit(
 			(EditText)rootView.findViewById(R.id.cell_credit_what_0), 
 			(EditText)rootView.findViewById(R.id.cell_credit_howmuch_0),
-			(EditText)rootView.findViewById(R.id.cell_credit_when_0) ) );
+			creditWhen ) );
 	}
 	@Override
 	public void onDestroyView() {
@@ -110,9 +144,6 @@ public class FormFragment extends /*Robo*/Fragment {
 		activity = getActivity();
 		resources = activity.getResources();
 		
-//		addExpenseHeaderAndRow();
-//		addCreditHeaderAndRow();
-		
 		buttonAddExpense.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -125,109 +156,135 @@ public class FormFragment extends /*Robo*/Fragment {
 				FormFragment.this.addCreditHeaderAndRow();
 			}
 		});
+		buttonSubmit.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				try {
+					FormFragment.this.submit();
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 	
 //	@OnClick(R.id.button_add_expense)
 	public void addExpenseHeaderAndRow() {
-		addRowHeader(/*cellHeaderBackground,*/ tablelayoutExpense, /*activity,*/ what, howmuch, when, where);
+		addRowHeader(tablelayoutExpense, what, howmuch, when, where);
 
-		RowContentExpense rowContentExpense = new RowContentExpense(buildEditText(cellContentBackground/*, activity*/), 
-				buildEditText(cellContentBackground/*, activity*/), 
-				buildEditText(cellContentBackground/*, activity*/),
-				buildEditText(cellContentBackground/*, activity*/) );
-		TableRow rowContent = buildRowContent(cellContentBackground, /*activity,*/ rowContentExpense.getEditTexts() );
-		tablelayoutExpense.addView(rowContent/*, new TableLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT)*/);
-		rowsContentExpense.add(rowContentExpense);
+		EditText howmuch = buildEdittextHowmuch();
+		final EditText when = buildEditextWhen();
+		RowContentExpense rowContentExpense = new RowContentExpense(buildEditTextForContent(), howmuch, when, buildEditTextForContent() );
+//		TableRow rowContent = buildRowContent(rowContentExpense.getEditTexts() );
+//		tablelayoutExpense.addView(rowContent);
+//		rowsContentExpense.add(rowContentExpense);
+		addRowContent(rowContentExpense, tablelayoutExpense, rowsContentExpense);
 		
 		Log.d("FormFragment","rowsContentExpense: "+rowsContentExpense.size());
 	}
 //	@OnClick(R.id.button_add_credit)
 	public void addCreditHeaderAndRow() {
-		addRowHeader(/*cellContentBackground,*/ tablelayoutCredit, /*activity,*/ what, howmuch, when);
+		addRowHeader(tablelayoutCredit, what, howmuch, when);
 
-		RowContentCredit rowContentCredit = new RowContentCredit(buildEditText(cellContentBackground/*, activity*/), 
-				buildEditText(cellContentBackground/*, activity*/), 
-				buildEditText(cellContentBackground/*, activity*/) );
-		TableRow rowContent = buildRowContent(cellContentBackground, /*activity,*/ rowContentCredit.getEditTexts() );
-		tablelayoutCredit.addView(rowContent/*, new TableLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT)*/);
-		rowsContentCredit.add(rowContentCredit);
+		EditText howmuch = buildEdittextHowmuch();
+		final EditText when = buildEditextWhen();
+		RowContentCredit rowContentCredit = new RowContentCredit(buildEditTextForContent(), howmuch, when );
+//		TableRow tablerowContentCredit = buildRowContent(rowContentCredit.getEditTexts() );
+//		tablelayoutCredit.addView(tablerowContentCredit);
+//		rowsContentCredit.add(rowContentCredit);
+		addRowContent(rowContentCredit, tablelayoutCredit, rowsContentCredit);
 		
 		Log.d("FormFragment","rowsContentCredit: "+rowsContentCredit.size());
 	}
-	
-	private abstract class RowContent {
-		protected final EditText edittextWhat;
-		protected final EditText edittextHowmuch;
-		protected final EditText edittextWhen;
-		protected List<EditText> list = new ArrayList<>();
-		public RowContent(EditText edittextWhat, EditText edittextHowmuch, EditText edittextWhen) {
-			this.edittextWhat = edittextWhat;
-			list.add(edittextWhat);
-			this.edittextHowmuch = edittextHowmuch;
-			list.add(edittextHowmuch);
-			this.edittextWhen = edittextWhen;
-			list.add(edittextWhen);
-		}
-		public List<EditText> getEditTexts() {
-			return list;
-		}
+	public EditText buildEdittextHowmuch() {
+		EditText howmuch = buildEditTextForContent();
+		howmuch.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+		return howmuch;
 	}
-
-	private class RowContentExpense extends RowContent {
-		private final EditText edittextWhere;
-		public RowContentExpense(EditText edittextWhat, EditText edittextHowmuch, EditText edittextWhen, EditText edittextWhere) {
-			super(edittextWhat, edittextHowmuch, edittextWhen);
-			this.edittextWhere = edittextWhere;
-			list.add(edittextWhere);
-		}
-	}
-	private class RowContentCredit extends RowContent {
-		public RowContentCredit(EditText edittextWhat, EditText edittextHowmuch, EditText edittextWhen) {
-			super(edittextWhat, edittextHowmuch, edittextWhen);
-		}
+	public <RC extends AbstractRowContent> void addRowContent(RC rowContent, TableLayout tableLayout, List<RC> list) {
+		TableRow tablerow = buildRowContent(rowContent.getEditTexts() );
+		tableLayout.addView(tablerow);
+		list.add(rowContent);
 	}
 	
-	private void addRowHeader(/*Drawable cellHeaderBackground,*/ TableLayout tableLayout, /*Activity activity,*/ String... strings) {
-		TableRow rowHeader = buildRowHeader(/*cellHeaderBackground,*/ /*activity,*/ strings);
-		tableLayout.addView(rowHeader/*, new TableLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)*/);
+	public void submit() throws ParseException {
+		Log.d(TAG,"submit");
+		List<ContentExpense> contentExpenses = new ArrayList<>();
+		List<ContentCredit> contentCredits = new ArrayList<>();
+		for (RowContentExpense rce: rowsContentExpense) {
+			String what = rce.getEdittextWhat().getText().toString();
+			double howmuch = Double.parseDouble(rce.getEdittextHowmuch().getText().toString());
+			String when = rce.getEdittextWhen().getText().toString();
+			String where = rce.getEdittextWhere().getText().toString();
+			
+			contentExpenses.add( new ContentExpense(what, howmuch, sdf.parse(when), where) );
+		}
+		for (RowContentCredit rcc: rowsContentCredit) {
+			String what = rcc.getEdittextWhat().getText().toString();
+			double howmuch = Double.parseDouble(rcc.getEdittextHowmuch().getText().toString());
+			String when = rcc.getEdittextWhen().getText().toString();
+			
+			contentCredits.add( new ContentCredit(what, howmuch, sdf.parse(when)) );
+		}
+		Log.d(TAG, "passing "+contentExpenses.size()+" contentExpenses, "+contentCredits.size()+" contentCredits");
+		
+		Intent intent = new Intent(activity, ContiService.class);
+		intent.putExtra(ContentList.EXTRA_CONTENT_EXPENSES, new ContentList<ContentExpense>().addAll(contentExpenses));
+		intent.putExtra(ContentList.EXTRA_CONTENT_CREDITS, new ContentList<ContentCredit>().addAll(contentCredits));
+		activity.startService(intent);
 	}
-	/*private static void addRowContent() {
-		RowContentExpense rowContentExpense = buildRowContentExpense();
-		TableRow rowContent = buildRowContent(cellContentBackground, activity, rowContentExpense.getTextViews() );
-		tablelayoutExpense.addView(rowContent);
-		rowsContentExpense.add(rowContentExpense);
-	}*/
 	
-	private TableRow buildRowHeader(/*Drawable cellHeaderBackground,*/ /*Activity activity,*/ String... strings) {
+	private void addRowHeader(TableLayout tableLayout,  String... strings) {
+		TableRow rowHeader = buildRowHeader(strings);
+		tableLayout.addView(rowHeader);
+	}
+	
+	private EditText buildEditextWhen() {
+		final EditText when = buildEditTextForContent();
+		when.setInputType(InputType.TYPE_DATETIME_VARIATION_DATE);
+		when.setFocusable(false);
+		when.setOnClickListener(new OnClickListener() {
+	        @Override
+	        public void onClick(View v) {
+//	            new DatePickerDialog(activity, buildDatePicker(when), myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+	        	DialogFragment picker = new DatePickerFragment(when);
+	        	picker.show(getFragmentManager(), "datePicker");
+	        }
+	    });
+		return when;
+	}
+	
+	private TableRow buildRowHeader(String... strings) {
 		final TableRow tableRow = new TableRow(activity);
 		for (String s: strings) {
-			TextView textView = buildTextView(s, cellHeaderBackground/*, activity*/);
+			TextView textView = buildTextViewForHeader(s);
 			tableRow.addView(textView, new TableLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 		}
 		return tableRow;
 	}
-	private TableRow buildRowContent(Drawable cellContentBackground, /*Activity activity,*/ List<EditText> editTexts) {
+	@SuppressWarnings("deprecation")
+	private TableRow buildRowContent(List<EditText> editTexts) {
 		final TableRow tableRow = new TableRow(activity);
 		for (EditText editText: editTexts) {
 			editText.setBackgroundDrawable(cellContentBackground);
-			tableRow.addView(editText/*, new TableLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)*/);
+			tableRow.addView(editText);
 		}
 		return tableRow;
 	}
 	
-	private TextView buildTextView(String cellText, Drawable backgroundResourceId/*, Activity activity*/) {
+	@SuppressWarnings("deprecation")
+	private TextView buildTextViewForHeader(String cellText) {
 		final TextView textView = new TextView(activity);
-		textView.setBackgroundDrawable(backgroundResourceId);
+		textView.setBackgroundDrawable(cellHeaderBackground);
 		textView.setText(cellText);
-//		textView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 		int px = dpiToPx(CELL_PADDING_IN_DPI);
 		textView.setPadding(px, px, px, px);
 		return textView;
 	}
-	private EditText buildEditText(Drawable backgroundResourceId/*, Activity activity*/) {
+	@SuppressWarnings("deprecation")
+	private EditText buildEditTextForContent() {
 		final EditText editText = new EditText(activity);
-		editText.setBackgroundDrawable(backgroundResourceId);
-//		textView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+		editText.setBackgroundDrawable(cellContentBackground);
 		int px = dpiToPx(CELL_PADDING_IN_DPI);
 		editText.setPadding(px, px, px, px);		
 		return editText;
@@ -237,5 +294,23 @@ public class FormFragment extends /*Robo*/Fragment {
 //		Log.d("dpiToPx",""+px);
 		return px;
 	}
+	
+
+	
+	/*private DatePickerDialog.OnDateSetListener buildDatePicker(final EditText editText) {
+		return new DatePickerDialog.OnDateSetListener() {
+		    @Override
+		    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+		        myCalendar.set(Calendar.YEAR, year);
+		        myCalendar.set(Calendar.MONTH, monthOfYear);
+		        myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+		        updateLabel(editText);
+		    }
+		};
+	} 
+
+	private void updateLabel(EditText editText) {
+		editText.setText(sdf.format(myCalendar.getTime()));
+	}*/
 
 }

@@ -1,5 +1,7 @@
 package net.iubris.conti.ui;
 
+import com.parse.ParseAnalytics;
+
 import net.iubris.conti.R;
 import butterknife.ButterKnife;
 import android.os.Bundle;
@@ -19,6 +21,8 @@ public class MainActivity extends /*Robo*/ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		ButterKnife.bind(this);
+		
+		ParseAnalytics.trackAppOpenedInBackground(getIntent());
 	}
 	
 	@Override
